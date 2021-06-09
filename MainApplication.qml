@@ -2,8 +2,6 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
-import Qt.labs.folderlistmodel 1.0
-import QtQuick.Dialogs 1.0
 
 import "pages"
 
@@ -67,17 +65,10 @@ ApplicationWindow {
         anchors.fill: parent
 
         ImageSelector { visible: window.step == 0 }
-        ImagesFromFolder { visible:  window.step == 1}
-        ServiceSelector { visible: window.step == 2 }
-        RunningAnalysis { visible: window.step == 3 }
-        Results { visible: window.step == 4 }
+        ServiceSelector { visible: window.step == 1 }
+        RunningAnalysis { visible: window.step == 2 }
+        Results { visible: window.step == 3 }
 
     }
 
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
