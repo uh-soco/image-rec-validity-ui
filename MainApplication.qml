@@ -37,6 +37,7 @@ ApplicationWindow {
         }
 
         Button {
+            id: previousPage
             anchors.left: parent.left
             anchors.top: parent.top
             text: qsTr("Previous step")
@@ -48,12 +49,12 @@ ApplicationWindow {
         }
 
         Button {
+            id: nextPage
             anchors.right: parent.right
             anchors.top: parent.top
             text: qsTr("Next step")
             onClicked: {
                 window.step += 1
-
             }
             enabled: window.step < ( pageIndicator.count - 1 ) // indexing issue
         }

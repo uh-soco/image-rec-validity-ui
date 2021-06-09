@@ -13,8 +13,26 @@ Page {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
+    Button {
+      id: start
+      text: "Start image analysis"
+      onClicked: {
+        previousPage.enabled = false
+        nextPage.enabled = false
+        start.visible = false
+
+        backend.setText("Hello world.")
+
+
+        running.visible = true
+        running.running = true
+      }
+    }
+
     BusyIndicator {
-        running: true
+        id: running
+        visible: false
+        running: false
         anchors.fill: parent
     }
 
