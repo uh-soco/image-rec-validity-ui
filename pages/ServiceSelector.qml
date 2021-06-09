@@ -2,8 +2,14 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
+import QtQuick.LocalStorage 2.15
+import "../javascript/ServiceSelector.js" as KeyManager
 
 Page {
+  height: parent.height
+  width: parent.width
+
+  Component.onCompleted: KeyManager.setup_database()
 
     header: Text {
         text: qsTr("Step 2: Select services used in the analysis")
@@ -11,67 +17,61 @@ Page {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
-    ColumnLayout{
-        spacing: 2
+    Dialog {
 
-        CheckBox {
-            id: amazon
-            text: qsTr("Amazon")
-        }
+      id: config
+      width: 400
+      height: 400
 
-        TextField {
-            id: amazon_username
-            text: "Username"
-            placeholderText: qsTr("Text Field")
-            visible: amazon.checked
-        }
+      property var service_name: "undefined"
+      property var values : []
 
-        TextField {
-            id: amazon_password
-            text: "Password"
-            placeholderText: qsTr("Text Field")
-            visible: amazon.checked
-        }
+      title: "Configure " + service_name
+      standardButtons: Dialog.Ok
 
-        CheckBox {
-            id: google
-            text: qsTr("Google")
-        }
+      ListView {
 
-        TextField {
-            id: google_username
-            text: "Username"
-            placeholderText: qsTr("Text Field")
-            visible: google.checked
-        }
+          id: variables
 
-        TextField {
-            id: google_password
-            text: "Password"
-            placeholderText: qsTr("Text Field")
-            visible: google.checked
-        }
+          anchors.fill: parent
 
-
-        CheckBox {
-            id: microsoft
-            text: qsTr("microsoft")
-        }
-
-        TextField {
-            id: microsoft_username
-            text: "Username"
-            placeholderText: qsTr("Text Field")
-            visible: microsoft.checked
-        }
-
-        TextField {
-            id: microsoft_password
-            text: "Password"
-            placeholderText: qsTr("Text Field")
-            visible: microsoft.checked
+           model: config.values
+           delegate: TextField {
+                 text: ''
+                 placeholderText: modelData.example
+                 onEditingFinished: function() {
+                    KeyManager.save( config.service_name, modelData.variable,text )
+                 }
+             }
         }
 
     }
+
+    ListView {
+
+      anchors.fill: parent
+
+       model: ["Amazon", "Microsoft", "Google"]
+       delegate:
+            SwitchDelegate {
+            text: modelData
+            onToggled: function() {
+              if( checked ) {
+                var needs_config = ! KeyManager.has_been_configured( modelData )
+
+                if( needs_config ) {
+                  config.service_name = modelData
+                  config.values = [
+                    { variable : "username" , example : 'example@example.com', value : '' } ,
+                    { variable : "password" , example : 'password', value : '' }
+                  ]
+                  config.open()
+
+                 }
+              }
+            }
+            // todo: add settings icon to allow settings config
+      }
+  }
 
 }
