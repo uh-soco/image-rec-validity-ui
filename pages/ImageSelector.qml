@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
+import Qt.labs.folderlistmodel 1.0
+import QtQuick.Dialogs 1.0
 
 Page {
 
@@ -51,7 +53,6 @@ Page {
         }
     }
 
-
     Rectangle {
         id: image_drop
         height: parent.height/4
@@ -67,6 +68,30 @@ Page {
             text: qsTr("Drop images here")
             anchors.left: parent.left
             anchors.top: parent.top
+        }
+        
+        FileDialog {
+            id: fileDialog
+            title: "Choose images from a folder"
+            nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
+            selectFolder: true
+            folder: shortcuts.home 
+            onAccepted: {
+                console.log("You chose: " + fileDialog.fileUrls)
+                Qt.quit()
+            }
+            onRejected: {
+                console.log("Cancelled")
+                Qt.quit()
+            }
+            Component.onCompleted: visible = true
+        }
+
+        Button {
+            onClicked: fileDialog.open()
+        }
+
+
         }
 
         DropArea {
