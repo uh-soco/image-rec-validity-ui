@@ -73,11 +73,14 @@ Page {
         FileDialog {
             id: fileDialog
             title: "Choose images from a folder"
-            nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
+			nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ] 
             folder: shortcuts.home
             onAccepted: {
                 // TODO: manage adding to model here
-            }
+            it = QDirIterator it(folder, nameFilters, QDirIterator::Subdirectories);
+            while it.hasNext():
+                images.append({folder: fileDialog.folder + "/"})
+              
         }
 
         Button {
