@@ -20,12 +20,18 @@ Page {
         previousPage.enabled = false
         nextPage.enabled = false
         start.visible = false
-
-        backend.setText("Hello world.")
-
-
         running.visible = true
         running.running = true
+
+        var image_array = []
+        for( var i = 0; i < images.count; i++ ) {
+          var image_path = images.get(i)._source;
+          backend.analyse_image( image_path, 'amazon' );
+        }
+
+        window.step += 1 // when ready, move to next screen
+
+
       }
     }
 
