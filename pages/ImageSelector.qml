@@ -48,6 +48,7 @@ Page {
                     fillMode: Image.PreserveAspectCrop
                     width: ( parent.width / parent.columns ) - parent.spacing
                     height: 150
+                    asynchronous: true
                 }
             }
         }
