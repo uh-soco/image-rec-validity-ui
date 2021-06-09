@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.0
-import Qt.labs.folderlistmodel 1.0
+import Qt.labs.folderlistmodel 2.15
 
 Page {
 
@@ -70,24 +70,38 @@ Page {
             anchors.top: parent.top
         }
 
-        FileDialog {
-            id: fileDialog
-            title: "Choose images from a folder"
-			nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ] 
-            folder: shortcuts.home
+        FolderListModel {
+          id: foldercontents
+          nameFilters: [ "*.png", "*.jpg" ]
+
+          onStatusChanged: {
+            if( foldercontents.status == FolderListModel.Ready) {
+              for( var i = 0; i < foldercontents.count; i++ ) {
+                var imageurl = foldercontents.get(i, "fileUrl")
+                images.append( { _source: imageurl } )
+              }
+            }
+          }
+        }
+
+        FolderDialog {
+            id: folderDialog
+            title: "Choose folder"
             onAccepted: {
-                // TODO: manage adding to model here
-            it = QDirIterator it(folder, nameFilters, QDirIterator::Subdirectories);
-            while it.hasNext():
-                images.append({folder: fileDialog.folder + "/"})
-              
+                foldercontents.folder = folder + "/"
+
+                console.log( "Selected folder " + folder )
+                console.log( "Folder contents folder" + foldercontents.folder )
+
+
+            }
         }
 
         Button {
-            text: "Choose files"
+            text: "Choose a folder"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            onClicked: fileDialog.open()
+            onClicked: folderDialog.open()
         }
 
 
