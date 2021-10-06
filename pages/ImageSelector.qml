@@ -71,6 +71,17 @@ Page {
             anchors.top: parent.top
         }
 
+        Button {
+            text: "Choose a folder"
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            onClicked: folderDialog.open()
+        }
+
+    }
+
+// outcommented as it did not work
+/*
         FolderListModel {
           id: foldercontents
           nameFilters: [ "*.png", "*.jpg" ]
@@ -81,6 +92,7 @@ Page {
                 var imageurl = foldercontents.get(i, "fileUrl")
                 images.append( { _source: imageurl } )
               }
+
             }
           }
         }
@@ -97,26 +109,14 @@ Page {
 
             }
         }
+*/
 
-        Button {
-            text: "Choose a folder"
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            onClicked: folderDialog.open()
-        }
+    DropArea {
+      enabled: true
+      anchors.fill: parent
 
-
-        }
-
-        DropArea {
-                enabled: true
-                anchors.fill: parent
-                onDropped: {
-                    console.log(drop.text);
-                    images.append( { _source: drop.text } )
-                    console.log( image_grid.height )
-                    console.log( images.count )
-
-                }
-        }
+      onDropped: {
+        images.append( { _source: drop.text } )
+      }
+    }
 }
