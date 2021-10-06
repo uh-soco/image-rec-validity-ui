@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     # QML ui setup
     engine = QQmlApplicationEngine()
-    engine.load(os.fspath(Path(__file__).resolve().parent / "MainApplication.qml"))
+    engine.load(os.fspath(Path(__file__).resolve().parent / "ui/MainApplication.qml"))
 
     ## add Python integrations
     backend = controller.Backend()
